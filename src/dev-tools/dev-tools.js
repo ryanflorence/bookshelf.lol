@@ -269,7 +269,7 @@ function FailureRate() {
 function EnableDevTools() {
   const [enableDevTools, setEnableDevTools] = useLocalStorageState(
     'dev-tools',
-    process.env.NODE_ENV === 'development',
+    import.meta.env.NODE_ENV === 'development',
   )
 
   const handleChange = event => setEnableDevTools(event.target.checked)

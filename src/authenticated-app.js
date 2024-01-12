@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import {jsx} from '@emotion/core'
-
 import {Routes, Route, Link as RouterLink, useMatch} from 'react-router-dom'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Button, ErrorMessage, FullPageErrorFallback} from './components/lib'

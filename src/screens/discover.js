@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import {jsx} from '@emotion/core'
-
 import * as React from 'react'
 import Tooltip from '@reach/tooltip'
 import {FaSearch, FaTimes} from 'react-icons/fa'

@@ -5,9 +5,9 @@ import * as usersDB from 'test/data/users'
 import * as listItemsDB from 'test/data/list-items'
 
 let sleep
-if (process.env.CI) {
+if (import.meta.env.CI) {
   sleep = () => Promise.resolve()
-} else if (process.env.NODE_ENV === 'test') {
+} else if (import.meta.env.NODE_ENV === 'test') {
   sleep = () => Promise.resolve()
 } else {
   sleep = (
@@ -25,8 +25,8 @@ function ls(key, defaultVal) {
   return Number.isFinite(val) ? val : defaultVal
 }
 
-const apiUrl = process.env.REACT_APP_API_URL
-const authUrl = process.env.REACT_APP_AUTH_URL
+const apiUrl = import.meta.env.VITE_API_URL
+const authUrl = import.meta.env.VITE_AUTH_URL
 
 const handlers = [
   rest.post(`${authUrl}/login`, async (req, res, ctx) => {
@@ -176,7 +176,7 @@ const handlers = [
 function shouldFail(req) {
   if (JSON.stringify(req.body)?.includes('FAIL')) return true
   if (req.url.searchParams.toString()?.includes('FAIL')) return true
-  if (process.env.NODE_ENV === 'test') return false
+  if (import.meta.env.NODE_ENV === 'test') return false
   const failureRate = Number(
     window.localStorage.getItem('__bookshelf_failure_rate__') || 0,
   )

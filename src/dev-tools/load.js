@@ -27,7 +27,7 @@ function loadDevTools(callback) {
   if (window.Cypress) return callback()
 
   // the default is on in development
-  if (process.env.NODE_ENV === 'development') return go()
+  if (import.meta.env.NODE_ENV === 'development') return go()
 
   return callback()
 

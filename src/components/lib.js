@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import {jsx} from '@emotion/core'
-
 import {Link as RouterLink} from 'react-router-dom'
 import styled from '@emotion/styled/macro'
 import {keyframes} from '@emotion/core'

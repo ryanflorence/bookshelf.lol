@@ -1,6 +1,6 @@
 import {queryCache} from 'react-query'
 import * as auth from 'auth-provider'
-const apiURL = process.env.REACT_APP_API_URL
+const apiURL = import.meta.env.VITE_API_URL
 
 async function client(
   endpoint,

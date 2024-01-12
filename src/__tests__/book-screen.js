@@ -14,7 +14,7 @@ import * as listItemsDB from 'test/data/list-items'
 import {formatDate} from 'utils/misc'
 import {App} from 'app'
 
-const apiURL = process.env.REACT_APP_API_URL
+const apiURL = import.meta.env.VITE_API_URL
 
 const fakeTimerUserEvent = userEvent.setup({
   advanceTimers: () => jest.runOnlyPendingTimers(),

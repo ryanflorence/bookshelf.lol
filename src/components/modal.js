@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import {jsx} from '@emotion/core'
-
 import * as React from 'react'
 import VisuallyHidden from '@reach/visually-hidden'
 import {Dialog, CircleButton} from './lib'

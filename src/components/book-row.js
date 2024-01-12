@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import {jsx} from '@emotion/core'
-
 import {Link} from 'react-router-dom'
 import {useListItem} from 'utils/list-items'
 import * as mq from 'styles/media-queries'
