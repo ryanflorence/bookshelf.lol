@@ -1,15 +1,8 @@
 diff --git a/node_modules/@remix-run/dev/dist/vite/plugin.js b/node_modules/@remix-run/dev/dist/vite/plugin.js
-index 53caa39..5863cd1 100644
+index 53caa39..dc57af8 100644
 --- a/node_modules/@remix-run/dev/dist/vite/plugin.js
 +++ b/node_modules/@remix-run/dev/dist/vite/plugin.js
-@@ -418,11 +418,14 @@ const remixVitePlugin = (options = {}) => {
-           hmrPartialAccept: true
-         },
-         optimizeDeps: {
-+          esbuildOptions: {
-+            jsx: "automatic"
-+          },
-           include: [
+@@ -422,7 +422,7 @@ const remixVitePlugin = (options = {}) => {
            // Pre-bundle React dependencies to avoid React duplicates,
            // even if React dependencies are not direct dependencies.
            // https://react.dev/warnings/invalid-hook-call-warning#duplicate-react
@@ -18,29 +11,33 @@ index 53caa39..5863cd1 100644
            // Pre-bundle Remix dependencies to avoid Remix router duplicates.
            // Our remix-remix-react-proxy plugin does not process default client and
            // server entry files since those come from within `node_modules`.
-@@ -438,6 +441,7 @@ const remixVitePlugin = (options = {}) => {
+@@ -437,8 +437,11 @@ const remixVitePlugin = (options = {}) => {
+           "@remix-run/node"]
          },
          esbuild: {
++          jsxImportSource: '@emotion/react',
            jsx: "automatic",
-+          jsxImportSource: "@emotion/react",
-           jsxDev: viteCommand !== "build"
+-          jsxDev: viteCommand !== "build"
++          jsxDev: viteCommand !== "build",
++          // MAYBE we want this?!
++          // optimizeDeps: { esbuildOptions: { jsx: "automatic" } }
          },
          resolve: {
-@@ -836,7 +840,7 @@ const remixVitePlugin = (options = {}) => {
-       if (id.includes("/node_modules/")) return;
-       let [filepath] = id.split("?");
-       if (!/.[tj]sx?$/.test(filepath)) return;
--      let devRuntime = "react/jsx-dev-runtime";
-+      let devRuntime = "@emotion/react/jsx-dev-runtime";
-       let ssr = (options === null || options === void 0 ? void 0 : options.ssr) === true;
-       let isJSX = filepath.endsWith("x");
-       let useFastRefresh = !ssr && (isJSX || code.includes(devRuntime));
-@@ -848,7 +852,7 @@ const remixVitePlugin = (options = {}) => {
+           dedupe: [
+@@ -848,9 +851,13 @@ const remixVitePlugin = (options = {}) => {
            sourceType: "module",
            allowAwaitOutsideFunction: true
          },
 -        plugins: [[require("react-refresh/babel"), {
-+        plugins: ['babel-plugin-macros', '@emotion/babel-plugin', [require("react-refresh/babel"), {
-           skipEnvCheck: true
-         }]],
+-          skipEnvCheck: true
+-        }]],
++        plugins: [
++          [require("react-refresh/babel"), {
++            skipEnvCheck: true
++          }], 
++          'babel-plugin-macros',
++          '@emotion/babel-plugin',
++        ],
          sourceMaps: true
+       });
+       if (result === null) return;
