@@ -1,4 +1,4 @@
-import {Link as RouterLink} from 'react-router-dom'
+import {Link as RouterLink} from '@remix-run/react'
 import styled from '@emotion/styled/macro'
 import {keyframes} from '@emotion/core'
 import * as colors from 'styles/colors'

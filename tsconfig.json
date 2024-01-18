@@ -3,5 +3,5 @@
     "baseUrl": "./src",
     "allowJs": true
   },
-  "include": ["src"]
+  "include": ["src", "routes"]
 }
