@@ -10,10 +10,8 @@
     "npm": ">=8.16.0"
   },
   "dependencies": {
-    "@emotion/cache": "^11.11.0",
     "@emotion/core": "^10.0.35",
     "@emotion/react": "^11.11.3",
-    "@emotion/server": "^11.11.0",
     "@emotion/styled": "^10.0.27",
     "@reach/dialog": "^0.17.0",
     "@reach/menu-button": "^0.17.0",
