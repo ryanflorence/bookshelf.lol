@@ -1,9 +1,21 @@
+import {Outlet, Scripts, LiveReload} from '@remix-run/react'
+
 export default function App() {
   return (
-    <html lang="en">
-      <body>
-        <div css={{color: 'red'}}>Heyoo</div>
-      </body>
-    </html>
+    <>
+      <Outlet />
+      <Scripts />
+      <LiveReload />
+    </>
+  )
+}
+
+export function HydrateFallback() {
+  return (
+    <>
+      <Outlet />
+      <Scripts />
+      <LiveReload />
+    </>
   )
 }
