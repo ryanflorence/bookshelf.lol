@@ -3,6 +3,7 @@ import {defineConfig} from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 // import react from '@vitejs/plugin-react'
 import inspect from 'vite-plugin-inspect'
+import babel from 'vite-plugin-babel'
 
 export default defineConfig({
   plugins: [
@@ -12,6 +13,11 @@ export default defineConfig({
     //     plugins: ['babel-plugin-macros', '@emotion/babel-plugin'],
     //   },
     // }),
+    babel({
+      babelConfig: {
+        plugins: ['babel-plugin-macros', '@emotion/babel-plugin'],
+      },
+    }),
     remix({
       appDirectory: 'src',
       unstable_ssr: false,
