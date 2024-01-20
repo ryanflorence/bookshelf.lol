@@ -1,4 +1,5 @@
 import {Routes, Route, Link as RouterLink, useMatch} from '@remix-run/react'
+import {Form} from '@remix-run/react'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Button, ErrorMessage, FullPageErrorFallback} from './components/lib'
 import * as mq from './styles/media-queries'
@@ -26,7 +27,7 @@ function ErrorFallback({error}) {
 }
 
 function AuthenticatedApp() {
-  const {user, logout} = useAuth()
+  const {user} = useAuth()
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       <div
@@ -39,9 +40,11 @@ function AuthenticatedApp() {
         }}
       >
         {user.username}
-        <Button variant="secondary" css={{marginLeft: '10px'}} onClick={logout}>
-          Logout
-        </Button>
+        <Form method="post" action="/logout">
+          <Button type="submit" variant="secondary" css={{marginLeft: '10px'}}>
+            Logout
+          </Button>
+        </Form>
       </div>
       <div
         css={{

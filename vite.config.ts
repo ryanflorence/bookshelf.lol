@@ -1,7 +1,6 @@
 import {unstable_vitePlugin as remix} from '@remix-run/dev'
 import {defineConfig} from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
-// import react from '@vitejs/plugin-react'
 import inspect from 'vite-plugin-inspect'
 import babel from 'vite-plugin-babel'
 
@@ -15,6 +14,16 @@ export default defineConfig({
     remix({
       appDirectory: 'src',
       unstable_ssr: false,
+      async routes(defineRoutes) {
+        return defineRoutes(route => {
+          route('/', 'screens/index.jsx', {index: true})
+          route('', 'screens/authenticated-layout.jsx', () => {
+            route('*', 'screens/authenticated-legacy.jsx')
+          })
+          route('login', 'screens/login.jsx')
+          route('logout', 'screens/logout.jsx')
+        })
+      },
     }),
     tsconfigPaths(),
     inspect(),

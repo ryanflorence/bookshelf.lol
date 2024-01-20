@@ -2,26 +2,14 @@ import * as React from 'react'
 import {Input, Button, Spinner, FormGroup, ErrorMessage} from './components/lib'
 import {Modal, ModalContents, ModalOpenButton} from './components/modal'
 import {Logo} from './components/logo'
-import {useAuth} from './context/auth-context'
-import {useAsync} from './utils/hooks'
+import {useFetcher} from '@remix-run/react'
 
-function LoginForm({onSubmit, submitButton}) {
-  const {isLoading, isError, error, run} = useAsync()
-  function handleSubmit(event) {
-    event.preventDefault()
-    const {username, password} = event.target.elements
-
-    run(
-      onSubmit({
-        username: username.value,
-        password: password.value,
-      }),
-    )
-  }
+function LoginForm({intent, submitButton}) {
+  const fetcher = useFetcher()
 
   return (
-    <form
-      onSubmit={handleSubmit}
+    <fetcher.Form
+      method="post"
       css={{
         display: 'flex',
         flexDirection: 'column',
@@ -33,13 +21,14 @@ function LoginForm({onSubmit, submitButton}) {
         },
       }}
     >
+      <input type="hidden" name="intent" value={intent} />
       <FormGroup>
         <label htmlFor="username">Username</label>
-        <Input id="username" />
+        <Input id="username" name="username" />
       </FormGroup>
       <FormGroup>
         <label htmlFor="password">Password</label>
-        <Input id="password" type="password" />
+        <Input id="password" type="password" name="password" />
       </FormGroup>
       <div>
         {React.cloneElement(
@@ -48,16 +37,15 @@ function LoginForm({onSubmit, submitButton}) {
           ...(Array.isArray(submitButton.props.children)
             ? submitButton.props.children
             : [submitButton.props.children]),
-          isLoading ? <Spinner css={{marginLeft: 5}} /> : null,
+          fetcher.state != 'idle' ? <Spinner css={{marginLeft: 5}} /> : null,
         )}
       </div>
-      {isError ? <ErrorMessage error={error} /> : null}
-    </form>
+      {fetcher.data?.error ? <ErrorMessage error={fetcher.data.error} /> : null}
+    </fetcher.Form>
   )
 }
 
 function UnauthenticatedApp() {
-  const {login, register} = useAuth()
   return (
     <div
       css={{
@@ -84,7 +72,7 @@ function UnauthenticatedApp() {
           </ModalOpenButton>
           <ModalContents aria-label="Login form" title="Login">
             <LoginForm
-              onSubmit={login}
+              intent="login"
               submitButton={<Button variant="primary">Login</Button>}
             />
           </ModalContents>
@@ -95,7 +83,7 @@ function UnauthenticatedApp() {
           </ModalOpenButton>
           <ModalContents aria-label="Registration form" title="Register">
             <LoginForm
-              onSubmit={register}
+              intent="register"
               submitButton={<Button variant="secondary">Register</Button>}
             />
           </ModalContents>
