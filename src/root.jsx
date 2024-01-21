@@ -3,10 +3,8 @@ import {Outlet, Scripts, LiveReload} from '@remix-run/react'
 import * as auth from './auth-provider'
 import {Profiler} from 'components/profiler'
 import {client} from 'utils/api-client'
-const AppProviders = React.lazy(() => import('./context'))
-
-// TODO: add FullPageErrorFallback/FullPageSpinner for error boundary/hydration
-// fallback after working out the weirdness with styled.button and friends
+import AppProviders from './context'
+import {FullPageErrorFallback, FullPageSpinner} from 'components/lib'
 
 export async function clientLoader() {
   const token = await auth.getToken()
@@ -15,6 +13,16 @@ export async function clientLoader() {
     return {listItems, user}
   }
   return {listItems: null, user: null}
+}
+
+export function HydrateFallback() {
+  return (
+    <>
+      <FullPageSpinner />
+      <Scripts />
+      <LiveReload />
+    </>
+  )
 }
 
 export default function Root() {
@@ -31,11 +39,6 @@ export default function Root() {
   )
 }
 
-export function HydrateFallback() {
-  return (
-    <>
-      <Scripts />
-      <LiveReload />
-    </>
-  )
+export function ErrorBoundary({error}) {
+  return <FullPageErrorFallback error={error} />
 }

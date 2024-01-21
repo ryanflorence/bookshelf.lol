@@ -16,6 +16,7 @@ export default function handleRequest(
       <html>
         <head>
           <title>Bookshelf.lol</title>
+          <style>body {margin: 0;}</style>
         </head>
         <body><div id=root>${body}</div></body>
       </html>`,
