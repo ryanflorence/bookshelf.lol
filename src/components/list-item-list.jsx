@@ -3,10 +3,15 @@ import {BookListUL} from './lib'
 import {BookRow} from './book-row'
 import {Profiler} from './profiler'
 
-function ListItemList({filterListItems, noListItems, noFilteredListItems}) {
-  const listItems = useListItems()
-
-  const filteredListItems = listItems.filter(filterListItems)
+function ControlledList({
+  listItems,
+  filterListItems,
+  noListItems,
+  noFilteredListItems,
+}) {
+  const filteredListItems = filterListItems
+    ? listItems.filter(filterListItems)
+    : listItems
 
   if (!listItems.length) {
     return <div css={{marginTop: '1em', fontSize: '1.2em'}}>{noListItems}</div>
@@ -35,4 +40,9 @@ function ListItemList({filterListItems, noListItems, noFilteredListItems}) {
   )
 }
 
-export {ListItemList}
+function UncontrolledList(props) {
+  const listItems = useListItems()
+  return <ControlledList listItems={listItems} {...props} />
+}
+
+export {UncontrolledList as ListItemList, ControlledList}

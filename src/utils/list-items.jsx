@@ -1,12 +1,30 @@
 import {useQuery, useMutation, queryCache} from 'react-query'
 import {setQueryDataForBook} from './books'
 import {useClient} from 'context/auth-context'
+import {client} from './api-client'
 
 function useListItem(bookId, options) {
   const listItems = useListItems(options)
   return listItems?.find(li => li.bookId === bookId) ?? null
 }
 
+export async function fetchListItems(token) {
+  const listItems = await queryCache.fetchQuery({
+    queryKey: 'list-items',
+    queryFn: () => client('list-items', {token}).then(data => data.listItems),
+    config: {
+      onSuccess: async listItems => {
+        for (const listItem of listItems) {
+          setQueryDataForBook(listItem.book)
+        }
+      },
+    },
+  })
+
+  return listItems
+}
+
+// TODO: remove all usage of this with loader and fetchListItems
 function useListItems(options = {}) {
   const client = useClient()
 

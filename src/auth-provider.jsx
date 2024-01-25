@@ -1,6 +1,8 @@
 // pretend this is firebase, netlify, or auth0's code.
 // you shouldn't have to implement something like this in your own app
 
+import {redirect} from '@remix-run/react'
+
 const localStorageKey = '__auth_provider_token__'
 
 async function getToken() {
@@ -48,4 +50,10 @@ async function client(endpoint, data) {
   })
 }
 
-export {getToken, login, register, logout, localStorageKey}
+async function ensureToken() {
+  let token = await getToken()
+  if (!token) throw redirect('/login')
+  return token
+}
+
+export {getToken, login, register, logout, localStorageKey, ensureToken}
