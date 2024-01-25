@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Outlet, Scripts, LiveReload} from '@remix-run/react'
+import {Outlet, Scripts, LiveReload, useRouteError} from '@remix-run/react'
 import * as auth from './auth-provider'
 import {Profiler} from 'components/profiler'
 import {client} from 'utils/api-client'
@@ -39,6 +39,8 @@ export default function Root() {
   )
 }
 
-export function ErrorBoundary({error}) {
+export function ErrorBoundary() {
+  let error = useRouteError()
+  console.error(error)
   return <FullPageErrorFallback error={error} />
 }
