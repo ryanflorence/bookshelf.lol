@@ -18,7 +18,7 @@ export default defineConfig({
         return defineRoutes(route => {
           route('/', 'screens/index.jsx', {index: true})
           route('', 'screens/authenticated-layout.jsx', () => {
-            route('*', 'screens/authenticated-legacy.jsx')
+            route('*', 'screens/legacy-routes.jsx')
           })
           route('login', 'screens/login.jsx')
           route('logout', 'screens/logout.jsx')
