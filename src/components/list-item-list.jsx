@@ -3,7 +3,7 @@ import {BookListUL} from './lib'
 import {BookRow} from './book-row'
 import {Profiler} from './profiler'
 
-function ControlledList({
+function ListItemList({
   listItems,
   filterListItems,
   noListItems,
@@ -32,7 +32,7 @@ function ControlledList({
       <BookListUL>
         {filteredListItems.map(listItem => (
           <li key={listItem.id} aria-label={listItem.book.title}>
-            <BookRow book={listItem.book} />
+            <BookRow book={listItem.book} listItem={listItem} />
           </li>
         ))}
       </BookListUL>
@@ -40,9 +40,4 @@ function ControlledList({
   )
 }
 
-function UncontrolledList(props) {
-  const listItems = useListItems()
-  return <ControlledList listItems={listItems} {...props} />
-}
-
-export {UncontrolledList as ListItemList, ControlledList}
+export {ListItemList}

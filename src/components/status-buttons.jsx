@@ -52,9 +52,7 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
   )
 }
 
-function StatusButtons({book}) {
-  const listItem = useListItem(book.id)
-
+function StatusButtons({book, listItem}) {
   const [mutate] = useUpdateListItem({throwOnError: true})
   const [handleRemoveClick] = useRemoveListItem({throwOnError: true})
   const [handleAddClick] = useCreateListItem({throwOnError: true})

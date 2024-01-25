@@ -1,20 +1,21 @@
 import * as React from 'react'
 import {Link} from 'components/lib'
-import {ControlledList} from 'components/list-item-list'
+import {ListItemList} from 'components/list-item-list'
 import * as auth from '../auth-provider'
 import {useLoaderData} from '@remix-run/react'
 import {fetchListItems} from 'utils/list-items'
 
 export async function clientLoader() {
-  let token = await auth.ensureToken()
+  const token = await auth.ensureToken()
   return fetchListItems(token)
 }
 
 function ReadingListScreen() {
-  let listItems = useLoaderData()
+  const listItems = useLoaderData()
   return (
-    <ControlledList
+    <ListItemList
       listItems={listItems}
+      filterListItems={li => !li.finishDate}
       noListItems={
         <p>
           Hey there! Welcome to your bookshelf reading list. Get started by

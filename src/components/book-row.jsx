@@ -5,9 +5,8 @@ import * as colors from 'styles/colors'
 import {StatusButtons} from './status-buttons'
 import {Rating} from './rating'
 
-function BookRow({book}) {
+function BookRow({book, listItem}) {
   const {title, author, coverImageUrl} = book
-  const listItem = useListItem(book.id)
 
   const id = `book-row-book-${book.id}`
 
@@ -99,7 +98,7 @@ function BookRow({book}) {
           height: '100%',
         }}
       >
-        <StatusButtons book={book} />
+        <StatusButtons book={book} listItem={listItem} />
       </div>
     </div>
   )

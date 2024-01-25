@@ -1,10 +1,20 @@
 import * as React from 'react'
 import {Link} from 'components/lib'
 import {ListItemList} from 'components/list-item-list'
+import * as auth from '../auth-provider'
+import {useLoaderData} from '@remix-run/react'
+import {fetchListItems} from 'utils/list-items'
+
+export async function clientLoader() {
+  const token = await auth.ensureToken()
+  return fetchListItems(token)
+}
 
 function FinishedScreen() {
+  const listItems = useLoaderData()
   return (
     <ListItemList
+      listItems={listItems}
       filterListItems={li => Boolean(li.finishDate)}
       noListItems={
         <p>
@@ -25,4 +35,4 @@ function FinishedScreen() {
   )
 }
 
-export {FinishedScreen}
+export default FinishedScreen

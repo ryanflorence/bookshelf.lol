@@ -9,7 +9,9 @@ function useListItem(bookId, options) {
 }
 
 export async function fetchListItems(token) {
-  const listItems = await queryCache.fetchQuery({
+  const cached = queryCache.getQueryData('list-items')
+  if (cached) return cached
+  return queryCache.fetchQuery({
     queryKey: 'list-items',
     queryFn: () => client('list-items', {token}).then(data => data.listItems),
     config: {
@@ -20,11 +22,9 @@ export async function fetchListItems(token) {
       },
     },
   })
-
-  return listItems
 }
 
-// TODO: remove all usage of this with loader and fetchListItems
+// TODO: remove this after individual books aren't causing a fetch to this thing
 function useListItems(options = {}) {
   const client = useClient()
 
