@@ -24,4 +24,4 @@ function ReadingListScreen() {
   )
 }
 
-export {ReadingListScreen}
+export default ReadingListScreen
