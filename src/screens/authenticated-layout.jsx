@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {redirect} from '@remix-run/react'
 import * as auth from '../auth-provider'
 
 const AuthenticatedApp = React.lazy(() => import('../authenticated-app'))
