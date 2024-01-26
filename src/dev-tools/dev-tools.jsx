@@ -229,7 +229,7 @@ function ControlsPanel() {
 function ClearLocalStorage() {
   function clear() {
     window.localStorage.clear()
-    window.location.assign(window.location)
+    // window.location.assign(window.location)
   }
   return <button onClick={clear}>Purge Database</button>
 }

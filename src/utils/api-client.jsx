@@ -22,7 +22,7 @@ async function client(
       queryCache.clear()
       await auth.logout()
       // refresh the page for them
-      window.location.assign(window.location)
+      // window.location.assign(window.location)
       return Promise.reject({message: 'Please re-authenticate.'})
     }
     const data = await response.json()
