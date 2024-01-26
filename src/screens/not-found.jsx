@@ -17,4 +17,4 @@ function NotFoundScreen() {
   )
 }
 
-export {NotFoundScreen}
+export default NotFoundScreen

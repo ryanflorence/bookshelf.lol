@@ -113,4 +113,4 @@ function DiscoverBooksScreen() {
   )
 }
 
-export {DiscoverBooksScreen}
+export default DiscoverBooksScreen

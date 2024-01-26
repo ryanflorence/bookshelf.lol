@@ -14,7 +14,7 @@ import {Profiler} from 'components/profiler'
 import {StatusButtons} from 'components/status-buttons'
 import * as auth from '../auth-provider'
 
-// TODO: defer this for the placeholder from before with the fake book w/ loading data
+// TODO: defer the book for the same placeholder from before
 export async function clientLoader({params}) {
   const token = await auth.ensureToken()
   const [book, listItem] = await Promise.all([

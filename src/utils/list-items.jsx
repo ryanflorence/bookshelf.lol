@@ -1,4 +1,4 @@
-import {useQuery, useMutation, queryCache} from 'react-query'
+import {useMutation, queryCache} from 'react-query'
 import {setQueryDataForBook} from './books'
 import {useClient} from 'context/auth-context'
 import {client} from './api-client'
