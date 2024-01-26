@@ -2,6 +2,7 @@ import * as React from 'react'
 import {useQuery, queryCache} from 'react-query'
 import {useClient} from 'context/auth-context'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
+import {client} from './api-client'
 
 const loadingBook = {
   title: 'Loading...',
@@ -45,14 +46,12 @@ function useBookSearch(query) {
   return {...result, books: result.data ?? loadingBooks}
 }
 
-function useBook(bookId) {
-  const client = useClient()
-  const {data} = useQuery({
+async function fetchBook(bookId, token) {
+  return queryCache.fetchQuery({
     queryKey: ['book', {bookId}],
     queryFn: () => client(`books/${bookId}`).then(data => data.book),
     ...bookQueryConfig,
   })
-  return data ?? loadingBook
 }
 
 function useRefetchBookSearchQuery() {
@@ -70,4 +69,9 @@ function setQueryDataForBook(book) {
   queryCache.setQueryData(['book', {bookId: book.id}], book, bookQueryConfig)
 }
 
-export {useBook, useBookSearch, useRefetchBookSearchQuery, setQueryDataForBook}
+export {
+  useBookSearch,
+  useRefetchBookSearchQuery,
+  setQueryDataForBook,
+  fetchBook,
+}

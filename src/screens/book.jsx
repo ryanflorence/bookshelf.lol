@@ -2,26 +2,38 @@ import * as React from 'react'
 import debounceFn from 'debounce-fn'
 import {FaRegCalendarAlt} from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
-import {useParams} from '@remix-run/react'
-import {useBook} from 'utils/books'
+import {useLoaderData} from '@remix-run/react'
+import {fetchBook} from 'utils/books'
 import {formatDate} from 'utils/misc'
-import {useListItem, useUpdateListItem} from 'utils/list-items'
+import {fetchListItem, useUpdateListItem} from 'utils/list-items'
 import * as mq from 'styles/media-queries'
 import * as colors from 'styles/colors'
 import {Spinner, Textarea, ErrorMessage} from 'components/lib'
 import {Rating} from 'components/rating'
 import {Profiler} from 'components/profiler'
 import {StatusButtons} from 'components/status-buttons'
+import * as auth from '../auth-provider'
+
+// TODO: defer this for the placeholder from before with the fake book w/ loading data
+export async function clientLoader({params}) {
+  const token = await auth.ensureToken()
+  const [book, listItem] = await Promise.all([
+    fetchBook(params.bookId, token),
+    fetchListItem(params.bookId, token),
+  ])
+  return {book, listItem}
+}
 
 function BookScreen() {
-  const {bookId} = useParams()
-  const book = useBook(bookId)
-  const listItem = useListItem(bookId)
+  const {book, listItem} = useLoaderData()
 
   const {title, author, coverImageUrl, publisher, synopsis} = book
 
   return (
-    <Profiler id="Book Screen" metadata={{bookId, listItemId: listItem?.id}}>
+    <Profiler
+      id="Book Screen"
+      metadata={{bookId: book.id, listItemId: listItem?.id}}
+    >
       <div>
         <div
           css={{
@@ -145,4 +157,4 @@ function NotesTextarea({listItem}) {
   )
 }
 
-export {BookScreen}
+export default BookScreen

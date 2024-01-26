@@ -20,6 +20,7 @@ export default defineConfig({
           route('', 'screens/authenticated-layout.jsx', () => {
             route('list', 'screens/reading-list.jsx')
             route('finished', 'screens/finished.jsx')
+            route('/book/:bookId', 'screens/book.jsx')
             route('*', 'screens/legacy-routes.jsx')
           })
           route('login', 'screens/login.jsx')

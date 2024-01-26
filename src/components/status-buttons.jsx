@@ -8,7 +8,6 @@ import {
 } from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
 import {
-  useListItem,
   useUpdateListItem,
   useRemoveListItem,
   useCreateListItem,

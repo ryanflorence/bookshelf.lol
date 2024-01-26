@@ -3,8 +3,8 @@ import {setQueryDataForBook} from './books'
 import {useClient} from 'context/auth-context'
 import {client} from './api-client'
 
-function useListItem(bookId, options) {
-  const listItems = useListItems(options)
+export async function fetchListItem(bookId, token) {
+  const listItems = await fetchListItems(token)
   return listItems?.find(li => li.bookId === bookId) ?? null
 }
 
@@ -22,27 +22,6 @@ export async function fetchListItems(token) {
       },
     },
   })
-}
-
-// TODO: remove this after individual books aren't causing a fetch to this thing
-function useListItems(options = {}) {
-  const client = useClient()
-
-  const {data: listItems} = useQuery({
-    queryKey: 'list-items',
-    queryFn: () => client('list-items').then(data => data.listItems),
-    ...options,
-    config: {
-      ...options.config,
-      onSuccess: async listItems => {
-        await options.config?.onSuccess?.(listItems)
-        for (const listItem of listItems) {
-          setQueryDataForBook(listItem.book)
-        }
-      },
-    },
-  })
-  return listItems ?? []
 }
 
 const defaultMutationOptions = {
@@ -107,10 +86,4 @@ function useCreateListItem(options) {
   })
 }
 
-export {
-  useListItem,
-  useListItems,
-  useUpdateListItem,
-  useRemoveListItem,
-  useCreateListItem,
-}
+export {useUpdateListItem, useRemoveListItem, useCreateListItem}
