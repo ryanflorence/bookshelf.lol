@@ -26,7 +26,6 @@ function DiscoverBooksScreen() {
   const {books, query} = useLoaderData()
   const navigation = useNavigation()
   const isSearching = navigation.formAction?.startsWith('/discover')
-  const queried = query != ''
 
   return (
     <div>
@@ -56,67 +55,53 @@ function DiscoverBooksScreen() {
           </Tooltip>
         </Form>
       </div>
-      <div>
-        {!queried && (
-          <div css={{marginTop: 20, fontSize: '1.2em', textAlign: 'center'}}>
+      <div css={{opacity: isSearching ? 0.25 : 1}}>
+        {query === '' && (
+          <div
+            css={{
+              marginTop: 20,
+              fontSize: '1.2em',
+              textAlign: 'center',
+            }}
+          >
             <p>Welcome to the discover page.</p>
-            <p>Here, let me load a few books for you...</p>
-            <React.Suspense
-              fallback={
-                <div css={{width: '100%', margin: 'auto'}}>
-                  <Spinner />
-                </div>
-              }
-            >
-              <Await resolve={books}>
-                {books => (
-                  <p>
-                    {books.length
-                      ? 'Here you go! Find more books with the search bar above.'
-                      : "Hmmm... I couldn't find any books to suggest for you."}
-                  </p>
-                )}
-              </Await>
-            </React.Suspense>
+            <p>Find more books with the search bar above.</p>
           </div>
         )}
-        {isSearching ? (
-          <Skeleton />
-        ) : (
-          <React.Suspense fallback={<Skeleton />}>
-            <Await resolve={books} errorElement={<SearchError />}>
-              {books =>
-                books.length ? (
-                  <Profiler
-                    id="Discover Books Screen Book List"
-                    metadata={{query, bookCount: books.length}}
-                  >
-                    <BookListUL css={{marginTop: 20}}>
-                      {books.map(book => (
-                        <li key={book.id} aria-label={book.title}>
-                          <BookRow key={book.id} book={book} />
-                        </li>
-                      ))}
-                    </BookListUL>
-                  </Profiler>
-                ) : queried ? (
-                  <div
-                    css={{
-                      marginTop: 20,
-                      fontSize: '1.2em',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <p>
-                      Hmmm... I couldn't find any books with the query "{query}
-                      ." Please try another.
-                    </p>
-                  </div>
-                ) : null
-              }
-            </Await>
-          </React.Suspense>
-        )}
+
+        <React.Suspense fallback={<Skeleton />}>
+          <Await resolve={books} errorElement={<SearchError />}>
+            {books =>
+              books.length ? (
+                <Profiler
+                  id="Discover Books Screen Book List"
+                  metadata={{query, bookCount: books.length}}
+                >
+                  <BookListUL css={{marginTop: 20}}>
+                    {books.map(book => (
+                      <li key={book.id} aria-label={book.title}>
+                        <BookRow key={book.id} book={book} />
+                      </li>
+                    ))}
+                  </BookListUL>
+                </Profiler>
+              ) : (
+                <div
+                  css={{
+                    marginTop: 20,
+                    fontSize: '1.2em',
+                    textAlign: 'center',
+                  }}
+                >
+                  <p>
+                    Hmmm... I couldn't find any books with the query "{query}
+                    ". Please try another.
+                  </p>
+                </div>
+              )
+            }
+          </Await>
+        </React.Suspense>
       </div>
     </div>
   )
