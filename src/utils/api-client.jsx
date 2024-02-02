@@ -1,11 +1,18 @@
-import {queryCache} from 'react-query'
 import * as auth from 'auth-provider'
+import {cache} from './cache'
 const apiURL = import.meta.env.VITE_API_URL
 
 async function client(
   endpoint,
   {data, token, headers: customHeaders, ...customConfig} = {},
+  cacheKey,
 ) {
+  if (cacheKey) {
+    const data = cache.get(cacheKey)
+    console.log(cacheKey, data)
+    if (data) return data
+  }
+
   const config = {
     method: data ? 'POST' : 'GET',
     body: data ? JSON.stringify(data) : undefined,
@@ -19,7 +26,7 @@ async function client(
 
   return window.fetch(`${apiURL}/${endpoint}`, config).then(async response => {
     if (response.status === 401) {
-      queryCache.clear()
+      cache.clear()
       await auth.logout()
       // refresh the page for them
       // window.location.assign(window.location)
@@ -27,6 +34,8 @@ async function client(
     }
     const data = await response.json()
     if (response.ok) {
+      if (cacheKey && config.method.toLowerCase() === 'get')
+        cache.set(cacheKey, data)
       return data
     } else {
       return Promise.reject(data)

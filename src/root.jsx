@@ -3,13 +3,12 @@ import {Outlet, Scripts, LiveReload, useRouteError} from '@remix-run/react'
 import * as auth from './auth-provider'
 import {Profiler} from 'components/profiler'
 import {client} from 'utils/api-client'
-import AppProviders from './context'
 import {FullPageErrorFallback, FullPageSpinner} from 'components/lib'
 
 export async function clientLoader() {
   const token = await auth.getToken()
   if (token) {
-    const {listItems, user} = await client('bootstrap', {token})
+    const {listItems, user} = await client('bootstrap', {token}, 'bootstrap')
     return {listItems, user}
   }
   return {listItems: null, user: null}
@@ -29,9 +28,7 @@ export default function Root() {
   return (
     <>
       <Profiler id="App Root" phases={['mount']}>
-        <AppProviders>
-          <Outlet />
-        </AppProviders>
+        <Outlet />
       </Profiler>
       <Scripts />
       <LiveReload />

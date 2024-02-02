@@ -1,5 +1,6 @@
 {
   "name": "bookshelf",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
   "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com/)",
@@ -31,8 +32,6 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-icons": "^4.4.0",
-    "react-query": "^2.26.4",
-    "react-query-devtools": "^2.6.3",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "stop-runaway-react-effects": "^2.0.0"

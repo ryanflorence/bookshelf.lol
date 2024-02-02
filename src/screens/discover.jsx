@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  defer,
   Await,
   Form,
   useAsyncError,
@@ -8,9 +9,10 @@ import {
 } from '@remix-run/react'
 import Tooltip from '@reach/tooltip'
 import {FaSearch} from 'react-icons/fa'
+import bookPlaceholderSvg from 'assets/book-placeholder.svg'
 import * as auth from '../auth-provider'
 import * as colors from 'styles/colors'
-import {fetchBookSearch, loadingBooks} from 'utils/books'
+import {fetchBookSearch} from 'utils/books'
 import {BookRow} from 'components/book-row'
 import {BookListUL, Spinner, Input} from 'components/lib'
 import {Profiler} from 'components/profiler'
@@ -28,7 +30,7 @@ export async function clientLoader({request}) {
       items => new Map([...items.map(item => [item.book.id, item])]),
     ),
   ]).then(([books, listItems]) => ({books, listItems}))
-  return {data, query}
+  return defer({data, query})
 }
 
 function DiscoverBooksScreen() {
@@ -119,6 +121,15 @@ function DiscoverBooksScreen() {
     </div>
   )
 }
+
+const loadingBooks = Array.from({length: 10}, (v, index) => ({
+  id: `loading-book-${index}`,
+  title: 'Loading...',
+  author: 'loading...',
+  coverImageUrl: bookPlaceholderSvg,
+  publisher: 'Loading Publishing',
+  synopsis: 'Loading...',
+}))
 
 function Skeleton() {
   return (

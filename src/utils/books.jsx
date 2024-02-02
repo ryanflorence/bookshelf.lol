@@ -1,59 +1,20 @@
-import {queryCache} from 'react-query'
-import bookPlaceholderSvg from 'assets/book-placeholder.svg'
 import {client} from './api-client'
-
-// TODO: implement this on book page
-const loadingBook = {
-  title: 'Loading...',
-  author: 'loading...',
-  coverImageUrl: bookPlaceholderSvg,
-  publisher: 'Loading Publishing',
-  synopsis: 'Loading...',
-  loadingBook: true,
-}
-
-const loadingBooks = Array.from({length: 10}, (v, index) => ({
-  id: `loading-book-${index}`,
-  ...loadingBook,
-}))
-
-const bookQueryConfig = {
-  staleTime: 1000 * 60 * 60,
-  cacheTime: 1000 * 60 * 60,
-}
+import {cache} from './cache'
 
 export async function fetchBookSearch(query, token) {
-  return queryCache.fetchQuery({
-    queryKey: ['bookSearch', {query}],
-    queryFn: () => {
-      return client(`books?query=${encodeURIComponent(query)}`, {token}).then(
-        data => data.books,
-      )
-    },
-    config: {
-      onSuccess(books) {
-        for (const book of books) {
-          queryCache.setQueryData(
-            ['book', {bookId: book.id}],
-            book,
-            bookQueryConfig,
-          )
-        }
-      },
-    },
-  })
+  const eq = encodeURIComponent(query)
+  const {books} = await client(`books?query=${eq}`, {token}, `search:${query}`)
+  for (const book of books) setQueryDataForBook(book)
+  return books
 }
 
 async function fetchBook(bookId, token) {
-  return queryCache.fetchQuery({
-    queryKey: ['book', {bookId}],
-    queryFn: () => client(`books/${bookId}`).then(data => data.book),
-    ...bookQueryConfig,
-  })
+  let {book} = await client(`books/${bookId}`, {token}, `book:${bookId}`)
+  return book
 }
 
 function setQueryDataForBook(book) {
-  queryCache.setQueryData(['book', {bookId: book.id}], book, bookQueryConfig)
+  cache.set(`book:${book.id}`, {book})
 }
 
-export {setQueryDataForBook, fetchBook, loadingBooks}
+export {setQueryDataForBook, fetchBook}

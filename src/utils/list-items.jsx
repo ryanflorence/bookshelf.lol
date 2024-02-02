@@ -1,12 +1,12 @@
-import {queryCache} from 'react-query'
 import {setQueryDataForBook} from './books'
 import {client} from './api-client'
 import {ensureToken} from 'auth-provider'
+import {cache} from './cache'
 
 export async function clientAction({request}) {
   let token = await ensureToken()
   let {intent, ...data} = await request.json()
-  queryCache.removeQueries('list-items')
+  cache.remove('list-items')
 
   switch (intent) {
     case 'add': {
@@ -34,17 +34,7 @@ export async function fetchListItem(bookId, token) {
 }
 
 export async function fetchListItems(token) {
-  const cached = queryCache.getQueryData('list-items')
-  if (cached) return cached
-  return queryCache.fetchQuery({
-    queryKey: 'list-items',
-    queryFn: () => client('list-items', {token}).then(data => data.listItems),
-    config: {
-      onSuccess: async listItems => {
-        for (const listItem of listItems) {
-          setQueryDataForBook(listItem.book)
-        }
-      },
-    },
-  })
+  let {listItems} = await client('list-items', {token}, 'list-items')
+  for (const listItem of listItems) setQueryDataForBook(listItem.book)
+  return listItems
 }
