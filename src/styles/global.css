@@ -1,4 +1,8 @@
 /* clears the 'X' from Internet Explorer */
+html,
+body {
+  scroll-behavior: auto !important;
+}
 input[type='search']::-ms-clear {
   display: none;
   width: 0;

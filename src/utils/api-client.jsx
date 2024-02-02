@@ -9,7 +9,6 @@ async function client(
 ) {
   if (cacheKey) {
     const data = cache.get(cacheKey)
-    console.log(cacheKey, data)
     if (data) return data
   }
 

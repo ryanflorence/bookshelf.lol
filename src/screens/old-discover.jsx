@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Tooltip from '@reach/tooltip'
-import {FaSearch, FaTimes} from 'react-icons/fa'
+import {FaSearch, FaTimes} from 'react-icons/fa/index.js'
 import * as colors from 'styles/colors'
 import {useBookSearch, useRefetchBookSearchQuery} from 'utils/books'
 import {BookRow} from 'components/book-row'

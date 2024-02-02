@@ -1,9 +1,9 @@
 import * as React from 'react'
 import debounceFn from 'debounce-fn'
-import {FaRegCalendarAlt} from 'react-icons/fa'
+import {FaRegCalendarAlt} from 'react-icons/fa/index.js'
 import Tooltip from '@reach/tooltip'
-import {useFetcher, useLoaderData} from '@remix-run/react'
-import {fetchBook} from 'utils/books'
+import {Await, defer, useFetcher, useLoaderData} from '@remix-run/react'
+import {fetchBook, loadingBook} from 'utils/books'
 import {formatDate} from 'utils/misc'
 import {fetchListItem} from 'utils/list-items'
 import * as mq from 'styles/media-queries'
@@ -14,19 +14,27 @@ import {Profiler} from 'components/profiler'
 import {StatusButtons} from 'components/status-buttons'
 import * as auth from '../auth-provider'
 
-// TODO: defer the book for the same placeholder from before
 export async function clientLoader({params}) {
   const token = await auth.ensureToken()
-  const [book, listItem] = await Promise.all([
+  const data = Promise.all([
     fetchBook(params.bookId, token),
     fetchListItem(params.bookId, token),
-  ])
-  return {book, listItem}
+  ]).then(([book, listItem]) => ({book, listItem}))
+  return defer({data})
 }
 
 function BookScreen() {
-  const {book, listItem} = useLoaderData()
+  const {data} = useLoaderData()
+  return (
+    <React.Suspense fallback={<Book book={loadingBook} />}>
+      <Await resolve={data}>
+        {({book, listItem}) => <Book book={book} listItem={listItem} />}
+      </Await>
+    </React.Suspense>
+  )
+}
 
+function Book({book, listItem}) {
   const {title, author, coverImageUrl, publisher, synopsis} = book
 
   return (

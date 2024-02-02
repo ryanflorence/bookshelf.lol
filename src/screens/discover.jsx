@@ -8,19 +8,15 @@ import {
   useNavigation,
 } from '@remix-run/react'
 import Tooltip from '@reach/tooltip'
-import {FaSearch} from 'react-icons/fa'
-import bookPlaceholderSvg from 'assets/book-placeholder.svg'
+import {FaSearch} from 'react-icons/fa/index.js'
 import * as auth from '../auth-provider'
 import * as colors from 'styles/colors'
-import {fetchBookSearch} from 'utils/books'
+import {fetchBookSearch, loadingBooks} from 'utils/books'
 import {BookRow} from 'components/book-row'
 import {BookListUL, Spinner, Input} from 'components/lib'
 import {Profiler} from 'components/profiler'
 import {fetchListItems} from 'utils/list-items'
 
-// TODO: stuff gets removed from the view if it's the default query
-// my guess is the old code was managing the cache manually and the
-// API data source doesnt' return stuff that's already in your list
 export async function clientLoader({request}) {
   let token = await auth.ensureToken()
   const query = new URL(request.url).searchParams.get('search') || ''
@@ -121,15 +117,6 @@ function DiscoverBooksScreen() {
     </div>
   )
 }
-
-const loadingBooks = Array.from({length: 10}, (v, index) => ({
-  id: `loading-book-${index}`,
-  title: 'Loading...',
-  author: 'loading...',
-  coverImageUrl: bookPlaceholderSvg,
-  publisher: 'Loading Publishing',
-  synopsis: 'Loading...',
-}))
 
 function Skeleton() {
   return (

@@ -5,7 +5,7 @@ import '@reach/tooltip/styles.css'
 
 import * as React from 'react'
 import {createRoot} from 'react-dom/client'
-import {FaTools} from 'react-icons/fa'
+import {FaTools} from 'react-icons/fa/index.js'
 import {Tooltip} from '@reach/tooltip'
 import {Tabs, TabList, TabPanels, TabPanel, Tab} from '@reach/tabs'
 // pulling the development thing directly because I'm not worried about

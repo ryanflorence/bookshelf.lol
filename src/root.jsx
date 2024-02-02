@@ -1,5 +1,11 @@
+import 'bootstrap/dist/css/bootstrap-reboot.css'
+import '@reach/dialog/styles.css'
+import '@reach/menu-button/styles.css'
+import '@reach/tooltip/styles.css'
+import './styles/global.css'
 import * as React from 'react'
 import {
+  Links,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -19,22 +25,24 @@ export async function clientLoader() {
   return {listItems: null, user: null}
 }
 
-export function HydrateFallback() {
+export default function Root() {
   return (
     <>
-      <FullPageSpinner />
-      <ScrollRestoration />
+      <Links />
+      <Profiler id="App Root" phases={['mount']}>
+        <Outlet />
+      </Profiler>
       <Scripts />
+      <ScrollRestoration />
     </>
   )
 }
 
-export default function Root() {
+export function HydrateFallback() {
   return (
     <>
-      <Profiler id="App Root" phases={['mount']}>
-        <Outlet />
-      </Profiler>
+      <Links />
+      <FullPageSpinner />
       <Scripts />
     </>
   )

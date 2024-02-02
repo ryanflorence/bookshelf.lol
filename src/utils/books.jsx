@@ -1,3 +1,4 @@
+import bookPlaceholderSvg from 'assets/book-placeholder.svg'
 import {client} from './api-client'
 import {cache} from './cache'
 
@@ -17,4 +18,16 @@ function setQueryDataForBook(book) {
   cache.set(`book:${book.id}`, {book})
 }
 
-export {setQueryDataForBook, fetchBook}
+const loadingBook = {
+  title: 'Loading...',
+  author: 'loading...',
+  coverImageUrl: bookPlaceholderSvg,
+  publisher: 'Loading Publishing',
+  synopsis: 'Loading...',
+}
+const loadingBooks = Array.from({length: 10}, (v, index) => ({
+  id: `loading-book-${index}`,
+  ...loadingBook,
+}))
+
+export {setQueryDataForBook, fetchBook, loadingBook, loadingBooks}
