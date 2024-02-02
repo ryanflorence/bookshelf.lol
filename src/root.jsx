@@ -1,5 +1,10 @@
 import * as React from 'react'
-import {Outlet, Scripts, LiveReload, useRouteError} from '@remix-run/react'
+import {
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useRouteError,
+} from '@remix-run/react'
 import * as auth from './auth-provider'
 import {Profiler} from 'components/profiler'
 import {client} from 'utils/api-client'
@@ -18,8 +23,8 @@ export function HydrateFallback() {
   return (
     <>
       <FullPageSpinner />
+      <ScrollRestoration />
       <Scripts />
-      <LiveReload />
     </>
   )
 }
@@ -31,7 +36,6 @@ export default function Root() {
         <Outlet />
       </Profiler>
       <Scripts />
-      <LiveReload />
     </>
   )
 }

@@ -1,0 +1,32 @@
+diff --git a/node_modules/@remix-run/react/dist/esm/index.js b/node_modules/@remix-run/react/dist/esm/index.js
+index d7bc678..928605c 100644
+--- a/node_modules/@remix-run/react/dist/esm/index.js
++++ b/node_modules/@remix-run/react/dist/esm/index.js
+@@ -8,7 +8,7 @@
+  *
+  * @license MIT
+  */
+-export { Form, Outlet, createPath, generatePath, isRouteErrorResponse, matchPath, matchRoutes, parsePath, resolvePath, unstable_usePrompt, unstable_useViewTransitionState, useAsyncError, useAsyncValue, useBeforeUnload, useBlocker, useFetchers, useFormAction, useHref, useLocation, useMatch, useNavigate, useNavigation, useNavigationType, useOutlet, useOutletContext, useParams, useResolvedPath, useRevalidator, useRouteError, useSearchParams, useSubmit } from 'react-router-dom';
++export { Form, Outlet, createPath, generatePath, isRouteErrorResponse, matchPath, matchRoutes, parsePath, resolvePath, unstable_usePrompt, unstable_useViewTransitionState, useAsyncError, useAsyncValue, useBeforeUnload, useBlocker, useFetchers, useFormAction, useHref, useLocation, useMatch, useNavigate, useNavigation, useNavigationType, useOutlet, useOutletContext, useParams, useResolvedPath, useRevalidator, useRouteError, useSearchParams, useSubmit, Routes, Route } from 'react-router-dom';
+ export { defer, json, redirect, redirectDocument } from '@remix-run/server-runtime';
+ export { RemixBrowser } from './browser.js';
+ export { Await, Link, Links, LiveReload, Meta, NavLink, PrefetchPageLinks, Scripts, RemixContext as UNSAFE_RemixContext, useActionData, useFetcher, useLoaderData, useMatches, useRouteLoaderData } from './components.js';
+diff --git a/node_modules/@remix-run/react/dist/index.js b/node_modules/@remix-run/react/dist/index.js
+index 6c34660..ed367e1 100644
+--- a/node_modules/@remix-run/react/dist/index.js
++++ b/node_modules/@remix-run/react/dist/index.js
+@@ -21,6 +21,14 @@ var server = require('./server.js');
+ 
+ 
+ 
++Object.defineProperty(exports, 'Routes', {
++  enumerable: true,
++  get: function () { return reactRouterDom.Routes; }
++});
++Object.defineProperty(exports, 'Route', {
++  enumerable: true,
++  get: function () { return reactRouterDom.Route; }
++});
+ Object.defineProperty(exports, 'Form', {
+   enumerable: true,
+   get: function () { return reactRouterDom.Form; }
