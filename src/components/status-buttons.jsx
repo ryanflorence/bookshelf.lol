@@ -7,25 +7,15 @@ import {
   FaTimesCircle,
 } from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
-import {
-  useUpdateListItem,
-  useRemoveListItem,
-  useCreateListItem,
-} from 'utils/list-items'
 import * as colors from 'styles/colors'
-import {useAsync} from 'utils/hooks'
 import {CircleButton, Spinner} from './lib'
+import {useFetcher} from '@remix-run/react'
 
-function TooltipButton({label, highlight, onClick, icon, ...rest}) {
-  const {isLoading, isError, error, run, reset} = useAsync()
-
-  function handleClick() {
-    if (isError) {
-      reset()
-    } else {
-      run(onClick())
-    }
-  }
+function TooltipButton({data, label, highlight, onClick, icon, ...rest}) {
+  const fetcher = useFetcher()
+  const isLoading = fetcher.state !== 'idle'
+  const error = fetcher.data?.error
+  const isError = Boolean(fetcher.state === 'idle' && error)
 
   return (
     <Tooltip label={isError ? error.message : label}>
@@ -41,7 +31,13 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
           },
         }}
         disabled={isLoading}
-        onClick={handleClick}
+        onClick={() => {
+          fetcher.submit(data(), {
+            method: 'post',
+            action: '/api/list-items',
+            encType: 'application/json',
+          })
+        }}
         aria-label={isError ? error.message : label}
         {...rest}
       >
@@ -52,10 +48,6 @@ function TooltipButton({label, highlight, onClick, icon, ...rest}) {
 }
 
 function StatusButtons({book, listItem}) {
-  const [mutate] = useUpdateListItem({throwOnError: true})
-  const [handleRemoveClick] = useRemoveListItem({throwOnError: true})
-  const [handleAddClick] = useCreateListItem({throwOnError: true})
-
   return (
     <React.Fragment>
       {listItem ? (
@@ -63,14 +55,22 @@ function StatusButtons({book, listItem}) {
           <TooltipButton
             label="Mark as unread"
             highlight={colors.yellow}
-            onClick={() => mutate({id: listItem.id, finishDate: null})}
+            data={() => ({
+              intent: 'update',
+              id: listItem.id,
+              finishDate: null,
+            })}
             icon={<FaBook />}
           />
         ) : (
           <TooltipButton
             label="Mark as read"
             highlight={colors.green}
-            onClick={() => mutate({id: listItem.id, finishDate: Date.now()})}
+            data={() => ({
+              intent: 'update',
+              id: listItem.id,
+              finishDate: Date.now(),
+            })}
             icon={<FaCheckCircle />}
           />
         )
@@ -79,14 +79,14 @@ function StatusButtons({book, listItem}) {
         <TooltipButton
           label="Remove from list"
           highlight={colors.danger}
-          onClick={() => handleRemoveClick({id: listItem.id})}
+          data={() => ({intent: 'remove', id: listItem.id})}
           icon={<FaMinusCircle />}
         />
       ) : (
         <TooltipButton
           label="Add to list"
           highlight={colors.indigo}
-          onClick={() => handleAddClick({bookId: book.id})}
+          data={() => ({bookId: book.id, intent: 'add'})}
           icon={<FaPlusCircle />}
         />
       )}

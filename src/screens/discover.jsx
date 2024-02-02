@@ -14,16 +14,25 @@ import {fetchBookSearch, loadingBooks} from 'utils/books'
 import {BookRow} from 'components/book-row'
 import {BookListUL, Spinner, Input} from 'components/lib'
 import {Profiler} from 'components/profiler'
+import {fetchListItems} from 'utils/list-items'
 
+// TODO: stuff gets removed from the view if it's the default query
+// my guess is the old code was managing the cache manually and the
+// API data source doesnt' return stuff that's already in your list
 export async function clientLoader({request}) {
   let token = await auth.ensureToken()
   const query = new URL(request.url).searchParams.get('search') || ''
-  const books = fetchBookSearch(query, token)
-  return {books, query}
+  const data = Promise.all([
+    fetchBookSearch(query, token),
+    fetchListItems(token).then(
+      items => new Map([...items.map(item => [item.book.id, item])]),
+    ),
+  ]).then(([books, listItems]) => ({books, listItems}))
+  return {data, query}
 }
 
 function DiscoverBooksScreen() {
-  const {books, query} = useLoaderData()
+  const {data, query} = useLoaderData()
   const navigation = useNavigation()
   const isSearching = navigation.formAction?.startsWith('/discover')
 
@@ -70,8 +79,8 @@ function DiscoverBooksScreen() {
         )}
 
         <React.Suspense fallback={<Skeleton />}>
-          <Await resolve={books} errorElement={<SearchError />}>
-            {books =>
+          <Await resolve={data} errorElement={<SearchError />}>
+            {({books, listItems}) =>
               books.length ? (
                 <Profiler
                   id="Discover Books Screen Book List"
@@ -80,7 +89,11 @@ function DiscoverBooksScreen() {
                   <BookListUL css={{marginTop: 20}}>
                     {books.map(book => (
                       <li key={book.id} aria-label={book.title}>
-                        <BookRow key={book.id} book={book} />
+                        <BookRow
+                          key={book.id}
+                          book={book}
+                          listItem={listItems.get(book.id)}
+                        />
                       </li>
                     ))}
                   </BookListUL>

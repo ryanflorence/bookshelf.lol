@@ -26,6 +26,7 @@ export default defineConfig({
           })
           route('login', 'screens/login.jsx')
           route('logout', 'screens/logout.jsx')
+          route('api/list-items', 'utils/list-items.jsx')
         })
       },
     }),

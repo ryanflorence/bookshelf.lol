@@ -2,13 +2,13 @@ import * as React from 'react'
 import debounceFn from 'debounce-fn'
 import {FaRegCalendarAlt} from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
-import {useLoaderData} from '@remix-run/react'
+import {useFetcher, useLoaderData} from '@remix-run/react'
 import {fetchBook} from 'utils/books'
 import {formatDate} from 'utils/misc'
-import {fetchListItem, useUpdateListItem} from 'utils/list-items'
+import {fetchListItem} from 'utils/list-items'
 import * as mq from 'styles/media-queries'
 import * as colors from 'styles/colors'
-import {Spinner, Textarea, ErrorMessage} from 'components/lib'
+import {Textarea, ErrorMessage} from 'components/lib'
 import {Rating} from 'components/rating'
 import {Profiler} from 'components/profiler'
 import {StatusButtons} from 'components/status-buttons'
@@ -72,7 +72,7 @@ function BookScreen() {
                   minHeight: 100,
                 }}
               >
-                {book.loadingBook ? null : <StatusButtons book={book} />}
+                <StatusButtons book={book} listItem={listItem} />
               </div>
             </div>
             <div css={{marginTop: 10, minHeight: 46}}>
@@ -85,9 +85,7 @@ function BookScreen() {
             </p>
           </div>
         </div>
-        {!book.loadingBook && listItem ? (
-          <NotesTextarea listItem={listItem} />
-        ) : null}
+        {listItem ? <NotesTextarea listItem={listItem} /> : null}
       </div>
     </Profiler>
   )
@@ -112,7 +110,13 @@ function ListItemTimeframe({listItem}) {
 }
 
 function NotesTextarea({listItem}) {
-  const [mutate, {error, isError, isLoading}] = useUpdateListItem()
+  const fetcher = useFetcher()
+  const mutate = data =>
+    fetcher.submit(data, {
+      method: 'put',
+      action: '/api/list-items',
+      encType: 'application/json',
+    })
 
   const debouncedMutate = React.useMemo(
     () => debounceFn(mutate, {wait: 300}),
@@ -120,7 +124,7 @@ function NotesTextarea({listItem}) {
   )
 
   function handleNotesChange(e) {
-    debouncedMutate({id: listItem.id, notes: e.target.value})
+    debouncedMutate({intent: 'update', id: listItem.id, notes: e.target.value})
   }
 
   return (
@@ -138,14 +142,13 @@ function NotesTextarea({listItem}) {
         >
           Notes
         </label>
-        {isError ? (
+        {fetcher.state === 'idle' && fetcher.data?.error ? (
           <ErrorMessage
             variant="inline"
-            error={error}
+            error={fetcher.data.error}
             css={{fontSize: '0.7em'}}
           />
         ) : null}
-        {isLoading ? <Spinner /> : null}
       </div>
       <Textarea
         id="notes"

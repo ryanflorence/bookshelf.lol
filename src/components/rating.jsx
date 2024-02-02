@@ -1,8 +1,8 @@
 import * as React from 'react'
-import {useUpdateListItem} from 'utils/list-items'
 import {FaStar} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {ErrorMessage} from 'components/lib'
+import {useFetcher} from '@remix-run/react'
 
 const visuallyHiddenCSS = {
   border: '0',
@@ -15,10 +15,11 @@ const visuallyHiddenCSS = {
   width: '1px',
 }
 
+// TODO: this thing has race conditions! make sure to highlight in the videos
 function Rating({listItem}) {
   const [isTabbing, setIsTabbing] = React.useState(false)
-
-  const [mutate, {error, isError}] = useUpdateListItem()
+  const fetcher = useFetcher()
+  let rating = fetcher.json?.rating ?? listItem.rating
 
   React.useEffect(() => {
     function handleKeyDown(event) {
@@ -42,9 +43,16 @@ function Rating({listItem}) {
           type="radio"
           id={ratingId}
           value={ratingValue}
-          checked={ratingValue === listItem.rating}
+          checked={ratingValue === rating}
           onChange={() => {
-            mutate({id: listItem.id, rating: ratingValue})
+            fetcher.submit(
+              {intent: 'update', id: listItem.id, rating: ratingValue},
+              {
+                method: 'post',
+                action: '/api/list-items',
+                encType: 'application/json',
+              },
+            )
           }}
           css={[
             visuallyHiddenCSS,
@@ -98,9 +106,9 @@ function Rating({listItem}) {
       }}
     >
       <span css={{display: 'flex'}}>{stars}</span>
-      {isError ? (
+      {fetcher.state === 'idle' && fetcher.data?.error ? (
         <ErrorMessage
-          error={error}
+          error={fetcher.data.error}
           variant="inline"
           css={{marginLeft: 6, fontSize: '0.7em'}}
         />

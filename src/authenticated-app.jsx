@@ -1,10 +1,14 @@
-import {Outlet, Link as RouterLink, useMatch} from '@remix-run/react'
+import {
+  Outlet,
+  Link as RouterLink,
+  useMatch,
+  useRouteLoaderData,
+} from '@remix-run/react'
 import {Form} from '@remix-run/react'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Button, ErrorMessage, FullPageErrorFallback} from './components/lib'
 import * as mq from './styles/media-queries'
 import * as colors from './styles/colors'
-import {useAuth} from './context/auth-context'
 
 function ErrorFallback({error}) {
   return (
@@ -22,7 +26,7 @@ function ErrorFallback({error}) {
 }
 
 function AuthenticatedApp() {
-  const {user} = useAuth()
+  const {user} = useRouteLoaderData('root')
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       <div
