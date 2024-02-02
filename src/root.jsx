@@ -25,26 +25,32 @@ export async function clientLoader() {
   return {listItems: null, user: null}
 }
 
-export default function Root() {
+function Layout({children}) {
   return (
     <>
       <Links />
+      {children}
+      <Scripts />
+    </>
+  )
+}
+
+export default function Root() {
+  return (
+    <Layout>
       <Profiler id="App Root" phases={['mount']}>
         <Outlet />
       </Profiler>
-      <Scripts />
       <ScrollRestoration />
-    </>
+    </Layout>
   )
 }
 
 export function HydrateFallback() {
   return (
-    <>
-      <Links />
+    <Layout>
       <FullPageSpinner />
-      <Scripts />
-    </>
+    </Layout>
   )
 }
 

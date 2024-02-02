@@ -5,7 +5,7 @@ import {
   FaMinusCircle,
   FaBook,
   FaTimesCircle,
-} from 'react-icons/fa/index.js'
+} from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
 import * as colors from 'styles/colors'
 import {CircleButton, Spinner} from './lib'

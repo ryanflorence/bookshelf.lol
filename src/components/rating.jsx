@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {FaStar} from 'react-icons/fa/index.js'
+import {FaStar} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {ErrorMessage} from 'components/lib'
 import {useFetcher} from '@remix-run/react'

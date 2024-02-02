@@ -1,6 +1,6 @@
 import * as React from 'react'
 import debounceFn from 'debounce-fn'
-import {FaRegCalendarAlt} from 'react-icons/fa/index.js'
+import {FaRegCalendarAlt} from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
 import {Await, defer, useFetcher, useLoaderData} from '@remix-run/react'
 import {fetchBook, loadingBook} from 'utils/books'

@@ -4,7 +4,7 @@ import {keyframes} from '@emotion/core'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
 import {Dialog as ReachDialog} from '@reach/dialog'
-import {FaSpinner} from 'react-icons/fa/index.js'
+import {FaSpinner} from 'react-icons/fa'
 
 const spin = keyframes({
   '0%': {transform: 'rotate(0deg)'},

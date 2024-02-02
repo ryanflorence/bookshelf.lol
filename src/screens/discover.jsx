@@ -8,7 +8,7 @@ import {
   useNavigation,
 } from '@remix-run/react'
 import Tooltip from '@reach/tooltip'
-import {FaSearch} from 'react-icons/fa/index.js'
+import {FaSearch} from 'react-icons/fa'
 import * as auth from '../auth-provider'
 import * as colors from 'styles/colors'
 import {fetchBookSearch, loadingBooks} from 'utils/books'
