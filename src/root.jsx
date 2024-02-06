@@ -6,6 +6,7 @@ import './styles/global.css'
 import * as React from 'react'
 import {
   Links,
+  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -31,11 +32,16 @@ export async function clientLoader({request}) {
 
 function Layout({children}) {
   return (
-    <>
-      <Links />
-      {children}
-      <Scripts />
-    </>
+    <html>
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div id="root">{children}</div>
+        <Scripts />
+      </body>
+    </html>
   )
 }
 

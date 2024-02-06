@@ -7,22 +7,12 @@ export default function handleRequest(
   responseHeaders,
   remixContext,
 ) {
-  let body = renderToString(
+  let html = renderToString(
     <RemixServer context={remixContext} url={request.url} />,
   )
 
-  return new Response(
-    `<!DOCTYPE html>
-      <html>
-        <head>
-          <title>Bookshelf.lol</title>
-          <style>body {margin: 0;}</style>
-        </head>
-        <body><div id=root>${body}</div></body>
-      </html>`,
-    {
-      headers: {'Content-Type': 'text/html'},
-      status: responseStatusCode,
-    },
-  )
+  return new Response(`<!DOCTYPE html>${html}`, {
+    headers: {'Content-Type': 'text/html'},
+    status: responseStatusCode,
+  })
 }

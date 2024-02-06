@@ -1,8 +1,7 @@
-import * as React from 'react'
 import {login, register} from '../auth-provider'
 import {redirect} from '@remix-run/react'
 
-const UnauthenticatedApp = React.lazy(() => import('../unauthenticated-app'))
+import UnauthenticatedApp from '../unauthenticated-app'
 
 export async function clientAction({request}) {
   let formData = await request.formData()

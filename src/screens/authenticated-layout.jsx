@@ -1,8 +1,6 @@
-import * as React from 'react'
 import {redirect} from '@remix-run/react'
 import * as auth from '../auth-provider'
-
-const AuthenticatedApp = React.lazy(() => import('../authenticated-app'))
+import AuthenticatedApp from '../authenticated-app'
 
 export async function clientLoader() {
   const token = await auth.getToken()
@@ -12,6 +10,4 @@ export async function clientLoader() {
   return null
 }
 
-export default function AuthLayout() {
-  return <AuthenticatedApp />
-}
+export default AuthenticatedApp
