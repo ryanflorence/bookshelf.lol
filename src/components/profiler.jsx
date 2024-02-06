@@ -3,7 +3,7 @@ import {client} from 'utils/api-client'
 
 let queue = []
 
-setInterval(sendProfileQueue, 5000)
+// setInterval(sendProfileQueue, 5000)
 
 function sendProfileQueue() {
   if (!queue.length) {

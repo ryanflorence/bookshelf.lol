@@ -3,7 +3,7 @@ import {Link} from 'components/lib'
 function NotFoundScreen() {
   return (
     <div
-      css={{
+      style={{
         height: '100%',
         display: 'grid',
         alignItems: 'center',

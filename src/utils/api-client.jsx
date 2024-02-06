@@ -4,7 +4,7 @@ const apiURL = import.meta.env.VITE_API_URL
 
 async function client(
   endpoint,
-  {data, token, headers: customHeaders, ...customConfig} = {},
+  {signal, data, token, headers: customHeaders, ...customConfig} = {},
   cacheKey,
 ) {
   if (cacheKey) {
@@ -13,6 +13,7 @@ async function client(
   }
 
   const config = {
+    signal,
     method: data ? 'POST' : 'GET',
     body: data ? JSON.stringify(data) : undefined,
     headers: {
@@ -23,6 +24,7 @@ async function client(
     ...customConfig,
   }
 
+  console.log(signal)
   return window.fetch(`${apiURL}/${endpoint}`, config).then(async response => {
     if (response.status === 401) {
       cache.clear()

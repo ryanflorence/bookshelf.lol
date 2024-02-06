@@ -1,119 +1,84 @@
+import './rating.css'
 import * as React from 'react'
 import {FaStar} from 'react-icons/fa'
-import * as colors from 'styles/colors'
 import {ErrorMessage} from 'components/lib'
 import {useFetcher} from '@remix-run/react'
 
-const visuallyHiddenCSS = {
-  border: '0',
-  clip: 'rect(0 0 0 0)',
-  height: '1px',
-  margin: '-1px',
-  overflow: 'hidden',
-  padding: '0',
-  position: 'absolute',
-  width: '1px',
-}
-
-// TODO: this thing has race conditions! make sure to highlight in the videos
+// TODO: highlight race conditions in videos
 function Rating({listItem}) {
-  const [isTabbing, setIsTabbing] = React.useState(false)
   const fetcher = useFetcher()
-  let rating = fetcher.json?.rating ?? listItem.rating
-
-  React.useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === 'Tab') {
-        setIsTabbing(true)
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown, {once: true})
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [])
-
-  const rootClassName = `list-item-${listItem.id}`
-
-  const stars = Array.from({length: 5}).map((x, i) => {
-    const ratingId = `rating-${listItem.id}-${i}`
-    const ratingValue = i + 1
-    return (
-      <React.Fragment key={i}>
-        <input
-          name={rootClassName}
-          type="radio"
-          id={ratingId}
-          value={ratingValue}
-          checked={ratingValue === rating}
-          onChange={() => {
-            fetcher.submit(
-              {intent: 'update', id: listItem.id, rating: ratingValue},
-              {
-                method: 'post',
-                action: '/api/list-items',
-                encType: 'application/json',
-              },
-            )
-          }}
-          css={[
-            visuallyHiddenCSS,
-            {
-              [`.${rootClassName} &:checked ~ label`]: {color: colors.gray20},
-              [`.${rootClassName} &:checked + label`]: {color: colors.orange},
-              // !important is here because we're doing special non-css-in-js things
-              // and so we have to deal with specificity and cascade. But, I promise
-              // this is better than trying to make this work with JavaScript.
-              // So deal with it 😎
-              [`.${rootClassName} &:hover ~ label`]: {
-                color: `${colors.gray20} !important`,
-              },
-              [`.${rootClassName} &:hover + label`]: {
-                color: 'orange !important',
-              },
-              [`.${rootClassName} &:focus + label svg`]: {
-                outline: isTabbing
-                  ? ['1px solid orange', '-webkit-focus-ring-color auto 5px']
-                  : 'initial',
-              },
-            },
-          ]}
-        />
-        <label
-          htmlFor={ratingId}
-          css={{
-            cursor: 'pointer',
-            color: listItem.rating < 0 ? colors.gray20 : colors.orange,
-            margin: 0,
-          }}
-        >
-          <span css={visuallyHiddenCSS}>
-            {ratingValue} {ratingValue === 1 ? 'star' : 'stars'}
-          </span>
-          <FaStar css={{width: '16px', margin: '0 2px'}} />
-        </label>
-      </React.Fragment>
-    )
-  })
+  const rating = fetcher.json?.rating ?? listItem.rating
   return (
-    <div
-      onClick={e => e.stopPropagation()}
-      className={rootClassName}
-      css={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        [`&.${rootClassName}:hover input + label`]: {
-          color: colors.orange,
-        },
-      }}
-    >
-      <span css={{display: 'flex'}}>{stars}</span>
+    <div onClick={e => e.stopPropagation()}>
+      <StarRating
+        label={rating => `${rating} star${rating !== 1 ? 's' : ''}`}
+        value={rating}
+        onClick={event => event.stopPropagation()}
+        onChange={value => {
+          fetcher.submit(
+            {intent: 'update', id: listItem.id, rating: value},
+            {
+              method: 'post',
+              action: '/api/list-items',
+              encType: 'application/json',
+            },
+          )
+        }}
+      />
       {fetcher.state === 'idle' && fetcher.data?.error ? (
         <ErrorMessage
           error={fetcher.data.error}
           variant="inline"
-          css={{marginLeft: 6, fontSize: '0.7em'}}
+          style={{marginLeft: 6, fontSize: '0.7em'}}
         />
       ) : null}
     </div>
+  )
+}
+
+function StarRating({label, value, onChange}) {
+  const rootId = React.useId()
+  const hoveredValue = value
+  const [_hoveredValue, setHoveredValue] = React.useState(0)
+
+  return (
+    <fieldset
+      className="StarRating"
+      onChange={event => {
+        onChange(Number(event.target.value))
+      }}
+    >
+      {[...Array(5)].map((_, i) => {
+        const rating = i + 1
+        const id = `${rootId}-${rating}`
+        const isRated = (hoveredValue || value) >= rating
+        return (
+          <React.Fragment key={i}>
+            <input
+              id={id}
+              type="radio"
+              name={rootId}
+              value={i + 1}
+              defaultChecked={value === rating}
+              className="visually-hidden"
+            />
+            <label
+              htmlFor={id}
+              key={i}
+              aria-label={label(rating)}
+              onMouseEnter={() => {
+                setHoveredValue(rating)
+              }}
+              onMouseLeave={() => {
+                setHoveredValue(0)
+              }}
+            >
+              <FaStar className={isRated ? 'rated' : ''} />
+            </label>
+          </React.Fragment>
+        )
+      })}
+    </fieldset>
   )
 }
 

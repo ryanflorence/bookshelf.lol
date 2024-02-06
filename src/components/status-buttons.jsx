@@ -1,3 +1,4 @@
+import './status-buttons.css'
 import * as React from 'react'
 import {
   FaCheckCircle,
@@ -7,7 +8,6 @@ import {
   FaTimesCircle,
 } from 'react-icons/fa'
 import Tooltip from '@reach/tooltip'
-import * as colors from 'styles/colors'
 import {CircleButton, Spinner} from './lib'
 import {useFetcher} from '@remix-run/react'
 
@@ -20,17 +20,8 @@ function TooltipButton({data, label, highlight, onClick, icon, ...rest}) {
   return (
     <Tooltip label={isError ? error.message : label}>
       <CircleButton
-        css={{
-          backgroundColor: 'white',
-          ':hover,:focus': {
-            color: isLoading
-              ? colors.gray80
-              : isError
-              ? colors.danger
-              : highlight,
-          },
-        }}
         disabled={isLoading}
+        className={`TooltipButton ${isError ? 'error' : highlight}`}
         onClick={() => {
           fetcher.submit(data(), {
             method: 'post',
@@ -54,7 +45,7 @@ function StatusButtons({book, listItem}) {
         Boolean(listItem.finishDate) ? (
           <TooltipButton
             label="Mark as unread"
-            highlight={colors.yellow}
+            highlight="yellow"
             data={() => ({
               intent: 'update',
               id: listItem.id,
@@ -65,7 +56,7 @@ function StatusButtons({book, listItem}) {
         ) : (
           <TooltipButton
             label="Mark as read"
-            highlight={colors.green}
+            highlight="green"
             data={() => ({
               intent: 'update',
               id: listItem.id,
@@ -78,14 +69,14 @@ function StatusButtons({book, listItem}) {
       {listItem ? (
         <TooltipButton
           label="Remove from list"
-          highlight={colors.danger}
+          highlight="danger"
           data={() => ({intent: 'remove', id: listItem.id})}
           icon={<FaMinusCircle />}
         />
       ) : (
         <TooltipButton
           label="Add to list"
-          highlight={colors.indigo}
+          highlight="indigo"
           data={() => ({bookId: book.id, intent: 'add'})}
           icon={<FaPlusCircle />}
         />

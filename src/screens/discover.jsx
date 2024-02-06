@@ -43,13 +43,13 @@ function DiscoverBooksScreen() {
             id="search"
             type="search"
             name="search"
-            css={{width: '100%'}}
+            style={{width: '100%'}}
           />
           <Tooltip label="Search Books">
             <label htmlFor="search">
               <button
                 type="submit"
-                css={{
+                style={{
                   border: '0',
                   position: 'relative',
                   marginLeft: '-35px',
@@ -62,10 +62,10 @@ function DiscoverBooksScreen() {
           </Tooltip>
         </Form>
       </div>
-      <div css={{opacity: isSearching ? 0.25 : 1}}>
+      <div style={{opacity: isSearching ? 0.25 : 1}}>
         {query === '' && (
           <div
-            css={{
+            style={{
               marginTop: 20,
               fontSize: '1.2em',
               textAlign: 'center',
@@ -84,7 +84,7 @@ function DiscoverBooksScreen() {
                   id="Discover Books Screen Book List"
                   metadata={{query, bookCount: books.length}}
                 >
-                  <BookListUL css={{marginTop: 20}}>
+                  <BookListUL style={{marginTop: 20}}>
                     {books.map(book => (
                       <li key={book.id} aria-label={book.title}>
                         <BookRow
@@ -98,7 +98,7 @@ function DiscoverBooksScreen() {
                 </Profiler>
               ) : (
                 <div
-                  css={{
+                  style={{
                     marginTop: 20,
                     fontSize: '1.2em',
                     textAlign: 'center',
@@ -120,7 +120,7 @@ function DiscoverBooksScreen() {
 
 function Skeleton() {
   return (
-    <BookListUL css={{marginTop: 20}}>
+    <BookListUL style={{marginTop: 20}}>
       {loadingBooks.map(book => (
         <li key={book.id} aria-label={book.title}>
           <BookRow key={book.id} book={book} />
@@ -133,7 +133,7 @@ function Skeleton() {
 function SearchError() {
   const error = useAsyncError()
   return (
-    <div css={{color: colors.danger}}>
+    <div className="text-danger">
       <p>There was an error:</p>
       <pre>{error.message}</pre>
     </div>

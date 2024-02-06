@@ -1,0 +1,129 @@
+.Dialog {
+  max-width: 450px;
+  border-radius: 3px;
+  padding-bottom: 3.5em;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+  margin: 20vh auto;
+  @media (max-width: 991px) {
+    width: 100%;
+    margin: 10vh auto;
+  }
+}
+
+.CircleButton {
+  border-radius: 30px;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #434449;
+  border: 1px solid #f1f1f4;
+  cursor: pointer;
+}
+
+.BookListUL {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+  grid-gap: 1em;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.Spinner {
+  animation: spin 1s linear infinite;
+}
+
+.Button {
+  padding: 10px 15px;
+  border: 0;
+  line-height: 1;
+  border-radius: 3px;
+
+  &.primary {
+    background: var(--indigo);
+    color: var(--base);
+  }
+
+  &.secondary {
+    background: var(--gray);
+    color: var(--text);
+  }
+}
+
+.field {
+  border: 1px solid var(--gray10);
+  background: var(--gray);
+  padding: 8px 12px;
+}
+
+.Input {
+  border-radius: 3px;
+}
+
+.FormGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.FullPageSpinner {
+  font-size: 4em;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Link {
+  color: var(--indigo);
+  &:hover {
+    color: var(--indigoDarken10);
+    text-decoration: underline;
+  }
+}
+
+.ErrorMessage {
+  color: var(--danger);
+
+  .pre {
+    white-space: break-spaces;
+    margin: 0;
+    margin-bottom: -5px;
+  }
+
+  &.stacked {
+    display: block;
+    pre {
+      display: block;
+    }
+  }
+
+  &.inline {
+    display: inline-block;
+    pre {
+      display: inline-block;
+    }
+  }
+}
+
+.FullPageErrorFallback {
+  color: var(--danger);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

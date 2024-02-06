@@ -1,4 +1,4 @@
-import {Global} from '@emotion/core'
+import {Global} from '@emotion/react'
 
 import '@reach/tabs/styles.css'
 import '@reach/tooltip/styles.css'

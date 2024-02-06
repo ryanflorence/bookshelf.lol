@@ -1,0 +1,22 @@
+.TooltipButton {
+  background-color: white;
+
+  &:hover,
+  &:focus {
+    &.yellow {
+      color: var(--yellow);
+    }
+    &.green {
+      color: var(--green);
+    }
+    &.indigo {
+      color: var(--indigo);
+    }
+    &[disabled] {
+      color: var(--gray80);
+    }
+    &.error {
+      color: var(--danger);
+    }
+  }
+}

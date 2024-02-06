@@ -39,7 +39,7 @@ function ModalContentsBase(props) {
 function ModalContents({title, children, ...props}) {
   return (
     <ModalContentsBase {...props}>
-      <div css={{display: 'flex', justifyContent: 'flex-end'}}>
+      <div style={{display: 'flex', justifyContent: 'flex-end'}}>
         <ModalDismissButton>
           <CircleButton>
             <VisuallyHidden>Close</VisuallyHidden>
@@ -47,7 +47,7 @@ function ModalContents({title, children, ...props}) {
           </CircleButton>
         </ModalDismissButton>
       </div>
-      <h3 css={{textAlign: 'center', fontSize: '2em'}}>{title}</h3>
+      <h3 style={{textAlign: 'center', fontSize: '2em'}}>{title}</h3>
       {children}
     </ModalContentsBase>
   )

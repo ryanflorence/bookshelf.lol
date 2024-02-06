@@ -5,9 +5,9 @@ import * as auth from '../auth-provider'
 import {useLoaderData} from '@remix-run/react'
 import {fetchListItems} from 'utils/list-items'
 
-export async function clientLoader() {
+export async function clientLoader({request}) {
   const token = await auth.ensureToken()
-  return fetchListItems(token)
+  return fetchListItems(token, request.signal)
 }
 
 function ReadingListScreen() {

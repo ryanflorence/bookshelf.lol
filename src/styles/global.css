@@ -1,3 +1,23 @@
+:root {
+  --base: white;
+  --text: #434449;
+  --gray: #f1f2f7;
+  --gray10: #f1f1f4;
+  --gray20: #e4e5e9;
+  --gray80: #6f7077;
+  --indigo: #3f51b5;
+  --indigoDarken10: #364495;
+  --indigoLighten80: #b7c1f8;
+  --yellow: #ffc107;
+  --green: #4caf50;
+  --danger: #ef5350;
+  --orange: orange;
+}
+
+/* export const large = '@media (min-width: 1200px)'
+export const medium = '@media (min-width: 992px) and (max-width: 1199px)'
+export const small = '@media (max-width: 991px)' */
+
 /* clears the 'X' from Internet Explorer */
 html,
 body {
@@ -30,4 +50,19 @@ a:not(:focus) {
 a:hover,
 a:focus {
   text-decoration: underline;
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.text-danger {
+  color: var(--danger);
 }

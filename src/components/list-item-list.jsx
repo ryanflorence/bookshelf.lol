@@ -13,11 +13,13 @@ function ListItemList({
     : listItems
 
   if (!listItems.length) {
-    return <div css={{marginTop: '1em', fontSize: '1.2em'}}>{noListItems}</div>
+    return (
+      <div style={{marginTop: '1em', fontSize: '1.2em'}}>{noListItems}</div>
+    )
   }
   if (!filteredListItems.length) {
     return (
-      <div css={{marginTop: '1em', fontSize: '1.2em'}}>
+      <div style={{marginTop: '1em', fontSize: '1.2em'}}>
         {noFilteredListItems}
       </div>
     )

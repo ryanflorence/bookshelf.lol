@@ -1,60 +1,29 @@
+import './lib.css'
 import * as React from 'react'
 import {Link as RouterLink} from '@remix-run/react'
-import {keyframes} from '@emotion/core'
-import * as colors from 'styles/colors'
-import * as mq from 'styles/media-queries'
 import {Dialog as ReachDialog} from '@reach/dialog'
 import {FaSpinner} from 'react-icons/fa'
 
-const spin = keyframes({
-  '0%': {transform: 'rotate(0deg)'},
-  '100%': {transform: 'rotate(360deg)'},
-})
-
-const CircleButton = React.forwardRef(({css, ...props}, ref) => (
+const CircleButton = React.forwardRef(({className, ...props}, ref) => (
   <button
     ref={ref}
-    css={{
-      borderRadius: '30px',
-      padding: '0',
-      width: '40px',
-      height: '40px',
-      lineHeight: '1',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: colors.base,
-      color: colors.text,
-      border: `1px solid ${colors.gray10}`,
-      cursor: 'pointer',
-      ...css,
-    }}
+    className={className ? `CircleButton ${className}` : 'CircleButton'}
     {...props}
   />
 ))
 
-const BookListUL = React.forwardRef(({css, ...props}, ref) => (
+const BookListUL = React.forwardRef(({className, ...props}, ref) => (
   <ul
     ref={ref}
-    css={{
-      listStyle: 'none',
-      padding: '0',
-      display: 'grid',
-      gridTemplateRows: 'repeat(auto-fill, minmax(100px, 1fr))',
-      gridGap: '1em',
-      ...css,
-    }}
+    className={className ? `BookListUL ${className}` : 'BookListUL'}
     {...props}
   />
 ))
 
-const Spinner = React.forwardRef(({css, ...props}, ref) => (
+const Spinner = React.forwardRef(({className, ...props}, ref) => (
   <FaSpinner
     ref={ref}
-    css={{
-      animation: `${spin} 1s linear infinite`,
-      ...css,
-    }}
+    className={className ? `Spinner ${className}` : 'Spinner'}
     {...props}
   />
 ))
@@ -62,158 +31,73 @@ Spinner.defaultProps = {
   'aria-label': 'loading',
 }
 
-const buttonVariants = {
-  primary: {
-    background: colors.indigo,
-    color: colors.base,
-  },
-  secondary: {
-    background: colors.gray,
-    color: colors.text,
-  },
-}
-const Button = React.forwardRef(({variant, css, ...props}, ref) => (
+const Button = React.forwardRef(({variant, className, ...props}, ref) => (
   <button
     ref={ref}
-    css={{
-      padding: '10px 15px',
-      border: '0',
-      lineHeight: '1',
-      borderRadius: '3px',
-      ...(buttonVariants[variant] || buttonVariants.primary),
-      ...css,
-    }}
+    className={['Button', className, variant].filter(Boolean).join(' ')}
     {...props}
   />
 ))
 
-const inputStyles = {
-  border: '1px solid #f1f1f4',
-  background: '#f1f2f7',
-  padding: '8px 12px',
-}
-
-const Input = React.forwardRef(({css, ...props}, ref) => (
+const Input = React.forwardRef(({className, ...props}, ref) => (
   <input
     ref={ref}
-    css={{
-      borderRadius: '3px',
-      ...inputStyles,
-      ...css,
-    }}
+    className={className ? `Input field ${className}` : 'Input field'}
     {...props}
   />
 ))
-const Textarea = React.forwardRef(({css, ...props}, ref) => (
+const Textarea = React.forwardRef(({className, ...props}, ref) => (
   <textarea
     ref={ref}
-    css={{
-      ...inputStyles,
-      ...css,
-    }}
+    className={className ? `field ${className}` : 'field'}
     {...props}
   />
 ))
 
-const Dialog = React.forwardRef(({css, ...props}, ref) => (
-  <ReachDialog
-    ref={ref}
-    css={{
-      maxWidth: '450px',
-      borderRadius: '3px',
-      paddingBottom: '3.5em',
-      boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.2)',
-      margin: '20vh auto',
-      [mq.small]: {
-        width: '100%',
-        margin: '10vh auto',
-      },
-      ...css,
-    }}
-    {...props}
-  />
+const Dialog = React.forwardRef((props, ref) => (
+  <ReachDialog className="Dialog" ref={ref} {...props} />
 ))
 
-const FormGroup = React.forwardRef(({css, ...props}, ref) => (
+const FormGroup = React.forwardRef(({className, ...props}, ref) => (
   <div
     ref={ref}
-    css={{
-      display: 'flex',
-      flexDirection: 'column',
-    }}
+    className={className ? `FormGroup ${className}` : 'FormGroup'}
     {...props}
   />
 ))
 
 function FullPageSpinner() {
   return (
-    <div
-      css={{
-        fontSize: '4em',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <div className="FullPageSpinner">
       <Spinner />
     </div>
   )
 }
 
-const Link = React.forwardRef(({css, ...props}, ref) => (
+const Link = React.forwardRef(({className, ...props}, ref) => (
   <RouterLink
     ref={ref}
-    css={{
-      color: colors.indigo,
-      ':hover': {
-        color: colors.indigoDarken10,
-        textDecoration: 'underline',
-      },
-    }}
+    className={className ? `Link ${className}` : 'Link'}
     {...props}
   />
 ))
 
-const errorMessageVariants = {
-  stacked: {display: 'block'},
-  inline: {display: 'inline-block'},
-}
-
-function ErrorMessage({error, variant = 'stacked', ...props}) {
+function ErrorMessage({className, error, variant = 'stacked', ...props}) {
   return (
     <div
       role="alert"
-      css={[{color: colors.danger}, errorMessageVariants[variant]]}
+      className={['ErrorMessage', className, variant].filter(Boolean).join(' ')}
       {...props}
     >
       <span>There was an error: </span>
-      <pre
-        css={[
-          {whiteSpace: 'break-spaces', margin: '0', marginBottom: -5},
-          errorMessageVariants[variant],
-        ]}
-      >
-        {error.message}
-      </pre>
+      <pre>{error.message}</pre>
     </div>
   )
 }
 
 function FullPageErrorFallback({error}) {
   return (
-    <div
-      role="alert"
-      css={{
-        color: colors.danger,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <div role="alert" className="FullPageErrorFallback">
       <p>Uh oh... There's a problem. Try refreshing the app.</p>
       <pre>{error.message}</pre>
     </div>

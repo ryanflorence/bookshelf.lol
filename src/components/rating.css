@@ -1,0 +1,17 @@
+.StarRating {
+  display: inline-block;
+
+  input[type='radio']:focus + label > svg {
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+
+  svg {
+    cursor: pointer;
+    width: 16px;
+    margin: 0 2px;
+    color: var(--gray20);
+    &.rated {
+      color: var(--orange);
+    }
+  }
+}

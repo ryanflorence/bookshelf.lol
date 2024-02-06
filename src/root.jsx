@@ -16,10 +16,14 @@ import {Profiler} from 'components/profiler'
 import {client} from 'utils/api-client'
 import {FullPageErrorFallback, FullPageSpinner} from 'components/lib'
 
-export async function clientLoader() {
+export async function clientLoader({request}) {
   const token = await auth.getToken()
   if (token) {
-    const {listItems, user} = await client('bootstrap', {token}, 'bootstrap')
+    const {listItems, user} = await client(
+      'bootstrap',
+      {signal: request.signal, token},
+      'bootstrap',
+    )
     return {listItems, user}
   }
   return {listItems: null, user: null}
