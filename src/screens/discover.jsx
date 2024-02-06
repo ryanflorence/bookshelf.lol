@@ -10,7 +10,6 @@ import {
 import Tooltip from '@reach/tooltip'
 import {FaSearch} from 'react-icons/fa'
 import * as auth from '../auth-provider'
-import * as colors from 'styles/colors'
 import {fetchBookSearch, loadingBooks} from 'utils/books'
 import {BookRow} from 'components/book-row'
 import {BookListUL, Spinner, Input} from 'components/lib'
