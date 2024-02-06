@@ -24,7 +24,6 @@ async function client(
     ...customConfig,
   }
 
-  console.log(signal)
   return window.fetch(`${apiURL}/${endpoint}`, config).then(async response => {
     if (response.status === 401) {
       cache.clear()

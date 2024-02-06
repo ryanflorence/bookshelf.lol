@@ -38,8 +38,7 @@ function Rating({listItem}) {
 
 function StarRating({label, value, onChange}) {
   const rootId = React.useId()
-  const hoveredValue = value
-  const [_hoveredValue, setHoveredValue] = React.useState(0)
+  const [hoveredValue, setHoveredValue] = React.useState(0)
 
   return (
     <fieldset

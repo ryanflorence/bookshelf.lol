@@ -14,7 +14,6 @@ import {StatusButtons} from 'components/status-buttons'
 import * as auth from '../auth-provider'
 
 export async function clientLoader({params, request}) {
-  console.log('running book clientLoader')
   const token = await auth.ensureToken()
   const data = Promise.all([
     fetchBook(params.bookId, token, request.signal),
