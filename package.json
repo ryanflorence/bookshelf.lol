@@ -20,6 +20,7 @@
     "@reach/tooltip": "^0.17.0",
     "@reach/visually-hidden": "^0.17.0",
     "@remix-run/react": "2.6.0",
+    "@remix-run/serve": "^2.6.0",
     "bootstrap": "^5.1.3",
     "codegen.macro": "^4.1.0",
     "debounce-fn": "^4.0.0",
@@ -72,9 +73,10 @@
     "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
-    "start": "vite",
+    "start": "remix-serve ./build/server/index.js",
+    "dev": "remix vite:dev",
     "start:cli": "cross-env BROWSER=none react-scripts start",
-    "build": "vite build",
+    "build": "remix vite:build",
     "test": "is-ci-cli \"test:coverage\" \"test:watch\"",
     "test:watch": "jest --watch",
     "test:coverage": "jest --watch=false --coverage",

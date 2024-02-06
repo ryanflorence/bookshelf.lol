@@ -11,8 +11,9 @@ export default function handleRequest(
     <RemixServer context={remixContext} url={request.url} />,
   )
 
+  responseHeaders.set('Content-Type', 'text/html')
   return new Response(`<!DOCTYPE html>${html}`, {
-    headers: {'Content-Type': 'text/html'},
+    headers: responseHeaders,
     status: responseStatusCode,
   })
 }

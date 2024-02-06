@@ -13,7 +13,7 @@ export default defineConfig({
     }),
     remix({
       appDirectory: 'src',
-      unstable_ssr: false,
+      unstable_ssr: true,
       async routes(defineRoutes) {
         return defineRoutes(route => {
           route('/', 'screens/index.jsx', {index: true})
