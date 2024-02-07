@@ -30,3 +30,6 @@ public/extra-*
 *.ignored.*
 ignored/
 .eslintcache
+
+# Local Netlify folder
+.netlify

@@ -28,8 +28,8 @@
     "match-sorter": "^6.3.1",
     "msw": "^0.42.1",
     "prop-types": "^15.8.1",
-    "react": "18.2",
-    "react-dom": "18.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-icons": "^5.0.1",
     "stop-runaway-react-effects": "^2.0.0"
@@ -72,9 +72,9 @@
     "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
-    "start": "vite",
+    "dev": "remix vite:dev",
     "start:cli": "cross-env BROWSER=none react-scripts start",
-    "build": "vite build",
+    "build": "remix vite:build",
     "test": "is-ci-cli \"test:coverage\" \"test:watch\"",
     "test:watch": "jest --watch",
     "test:coverage": "jest --watch=false --coverage",
